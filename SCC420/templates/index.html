@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select a Threat Group</title>
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Select a Threat Group</h1>
+    <table id="groupsTable">
+        <thead>
+            <tr>
+                <th>Overall Rank</th>
+                <th>Group Name</th>
+                <th>Type</th>
+                <th>Origin Country</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for group, rank, type, origin_country in groups %}
+            <tr>
+                <td>{{ rank }}</td>
+                <td><a href="{{ url_for('profile', group_name=group) }}">{{ group }}</a></td>
+                <td>{{ type }}</td>
+                <td>{{ origin_country }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <script>
+        $(document).ready(function() {
+            $('#groupsTable').DataTable({
+                "paging": false,
+                "searching": true,
+                "ordering": true
+            });
+        });
+    </script>
+</body>
+</html>

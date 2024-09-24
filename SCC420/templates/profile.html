@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Profile: {{ profile.group_name }}</title>
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+          margin: 0;
+          padding: 0;
+          border: 0;
+          font-size: 100%;
+          font: inherit;
+          vertical-align: baseline;
+          outline: none;
+          -webkit-font-smoothing: antialiased;
+          -webkit-text-size-adjust: 100%;
+          -ms-text-size-adjust: 100%;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+        }
+        html { overflow-y: scroll; }
+        body { 
+          background: #eee url('https://i.imgur.com/eeQeRmk.png'); 
+          font-family: 'Roboto', sans-serif;
+          font-size: 62.5%;
+          line-height: 1;
+          color: #585858;
+          padding: 22px 10px;
+          padding-bottom: 55px;
+        }
+
+        ::selection { background: #5f74a0; color: #fff; }
+        ::-moz-selection { background: #5f74a0; color: #fff; }
+        ::-webkit-selection { background: #5f74a0; color: #fff; }
+
+        br { display: block; line-height: 1.6em; } 
+
+        article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
+        ol, ul { list-style: none; }
+
+        input, textarea { 
+          -webkit-font-smoothing: antialiased;
+          -webkit-text-size-adjust: 100%;
+          -ms-text-size-adjust: 100%;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          outline: none; 
+        }
+
+        blockquote, q { quotes: none; }
+        blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+        strong, b { font-weight: bold; } 
+
+        table { border-collapse: collapse; border-spacing: 0; }
+        img { border: 0; max-width: 100%; }
+
+        h1 { 
+          font-family: 'Roboto', sans-serif;
+          font-weight: 700;
+          font-size: 3em;
+          line-height: 1.4em;
+          margin-bottom: 20px;
+          text-align: center;
+          color: #333;
+          background-color: #e0e0e0;
+          padding: 10px;
+          border-radius: 5px;
+        }
+
+        #wrapper {
+          display: block;
+          max-width: 1200px;
+          background: #fff;
+          margin: 0 auto;
+          padding: 20px;
+          box-shadow: 2px 2px 3px -1px rgba(0,0,0,0.35);
+        }
+
+        #keywords {
+          margin: 20px auto;
+          font-size: 1.2em;
+          width: 100%;
+        }
+
+        #keywords thead {
+          cursor: pointer;
+          background: #acc8dd;
+        }
+        #keywords thead tr th { 
+          font-weight: bold;
+          padding: 12px 15px;
+          text-align: left;
+        }
+        #keywords thead tr th span { 
+          padding-right: 20px;
+          background-repeat: no-repeat;
+          background-position: 100% 100%;
+        }
+
+        #keywords thead tr th.headerSortUp, #keywords thead tr th.headerSortDown {
+          background: #c9dff0;
+        }
+
+        #keywords thead tr th.headerSortUp span {
+          background-image: url('https://i.imgur.com/SP99ZPJ.png');
+        }
+        #keywords thead tr th.headerSortDown span {
+          background-image: url('https://i.imgur.com/RkA9MBo.png');
+        }
+
+        #keywords tbody tr { 
+          color: #555;
+        }
+        #keywords tbody tr td {
+          text-align: left;
+          padding: 12px 15px;
+          border-bottom: 1px solid #ddd;
+        }
+        #keywords tbody tr td.lalign {
+          text-align: left;
+        }
+
+        /* Group Info Styles */
+        .group-info {
+            font-size: 1.6em;
+            line-height: 1.4em;
+            margin-bottom: 20px;
+        }
+
+        .group-info p {
+            margin-bottom: 10px;
+        }
+
+        /* Side Heading Styles */
+        .side-heading {
+            font-size: 2.2em;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            color: #444;
+            border-left: 5px solid #444;
+            padding-left: 15px;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div id="wrapper">
+        <h1>Threat Profile: {{ profile.group_name }}</h1>
+        <h2 class="group-info">Group Information:</h2>
+        <div class="group-info">
+            <p><strong>Type:</strong> {{ profile.type }}</p>
+            <p><strong>Origin Country:</strong> {{ profile.origin_country }}</p>
+            <p><strong>Overall Rank:</strong> {{ profile.overall_rank }}</p>
+            <p><strong>Capability Score:</strong> {{ profile.capability_score }} ({{ profile.capability_score | round(2) }})</p>
+            <p><strong>Total Techniques Used:</strong> {{ profile.total_techniques }}</p>
+            <p><strong>Total Tactics Used:</strong> {{ profile.total_tactics }}</p>
+            <p><strong>Total Software Used:</strong> {{ profile.total_software }}</p>
+            <p><strong>Total CVEs Associated:</strong> {{ profile.total_CVE }}</p>
+        </div>
+
+        <h2 class="side-heading">Associated Vulnerabilities (CVEs):</h2>
+        <table id="keywords" class="display">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="lalign">CVE</th>
+                    <th>Confidentiality Impact</th>
+                    <th>Integrity Impact</th>
+                    <th>Availability Impact</th>
+                    <th>Total Impact Score</th>
+                    <th>Inherent Total Risk</th>
+                    <th>Overall Risk Rank</th>
+                    <th>Relevancy</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cve in profile.cves %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td class="lalign">{{ cve['CVE'] }}</td>
+                    <td>{{ cve['ConfidentialityImpact'] }}</td>
+                    <td>{{ cve['IntegrityImpact'] }}</td>
+                    <td>{{ cve['AvailabilityImpact'] }}</td>
+                    <td>{{ cve['total_impact'] }} (Normalized: {{ cve['norm_total_impact'] }})</td>
+                    <td>{{ cve['inherent_total_risk'] }}</td>
+                    <td>{{ cve['overall_risk_rank'] }}</td>
+                    <td>{{ cve['Relevancy'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- DataTables Initialization -->
+    <script>
+        $(document).ready(function() {
+            $('#keywords').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true
+            });
+        });
+    </script>
+</body>
+</html>
